@@ -81,9 +81,9 @@ extension CredentialsWorker {
     }
     
     private func performAuthenticationFlow() -> EventLoopFuture<Credentials> {
-        fatalError("unimplemented")
+        fatalError("unimplemented: ugh i realised this needs a secret to be exposed and I don't want that so for now, you have to supply your own token through the `authenticate --token` command.")
         
-        let clientID = "897c59a7449fe8457108"
+        let clientID = ""
         let clientSecret = ""
         let state = UUID().uuidString
         

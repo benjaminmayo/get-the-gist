@@ -78,10 +78,10 @@ struct Authenticate : ParsableCommand {
     func run() throws {
         let worker = CredentialsWorker(forUsername: self.options.username)
         
-        let authenticatedSuccessfullyMessage = "Authenticated successfully. The token is stored in the Keychain, so you don't need to authenticate in future."
+        //let authenticatedSuccessfullyMessage = "Authenticated successfully. The token is stored in the Keychain, so you don't need to authenticate in future."
         
         worker.setToken(to: self.token).map {
-            print("Updated credentials for \(self.options.username)")
+            print("Updated credentials for \"\(self.options.username)\".")
         }.done()
         
 //        if self.force {
