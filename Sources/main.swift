@@ -3,11 +3,11 @@ import NIO
 import ArgumentParser
 
 struct GetTheGist : ParsableCommand {
-    static let configuration = CommandConfiguration(abstract: "Get the gist", subcommands: [Authenticate.self, Push.self])
+    static let configuration = CommandConfiguration(abstract: "`GetTheGist` makes it super simple to upload a single file out of a larger project as a GitHub gist. The gist means you can keep the rest of your codebase private, whilst bringing just that one file into public domain for teaching purposes. ", discussion: "You need to run the `authenticate` command before using `push`.", subcommands: [Authenticate.self, Push.self])
 }
 
 struct UserOptions : ParsableArguments {
-    @Option(name: NameSpecification.customLong("user"), help: ArgumentHelp("A username to associate with Gist Github credentials", discussion: "Gist GitHub credentials are unique per user. Provide a user suitable for the project in which the file resides."))
+    @Option(name: .customLong("user"), help: ArgumentHelp("A username to associate with Gist Github credentials", discussion: "Gist GitHub credentials are unique per user. Provide a user suitable for the project in which the file resides."))
     var username: String
 }
 
@@ -70,10 +70,10 @@ struct Authenticate : ParsableCommand {
     @OptionGroup()
     var options: UserOptions
     
-//    @Flag(name: .long, help: "Force the authentication flow to happen again, even if existing credentials are found.")
+//    @Flag(help: "Force the authentication flow to happen again, even if existing credentials are found.")
 //    var force: Bool
     
-    @Option(name: .long, help: "Provide a personal access token made in the GitHub UI.") var token: String
+    @Option(help: "Provide a personal access token made in the GitHub UI.") var token: String
     
     func run() throws {
         let worker = CredentialsWorker(forUsername: self.options.username)

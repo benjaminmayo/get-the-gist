@@ -82,52 +82,52 @@ extension CredentialsWorker {
     
     private func performAuthenticationFlow() -> EventLoopFuture<Credentials> {
         fatalError("unimplemented: ugh i realised this needs a secret to be exposed and I don't want that so for now, you have to supply your own token through the `authenticate --token` command.")
-        
-        let clientID = ""
-        let clientSecret = ""
-        let state = UUID().uuidString
-        
-        let host = "localhost"
-        let port = 8888
-        
-        let queryItems: [URLQueryItem] = [
-            .init(name: "client_id", value: clientID),
-            .init(name: "redirect_uri", value: "http://\(host):\(port)"),
-            .init(name: "scope", value: "gist"),
-            .init(name: "state", value: state)
-        ]
-        
-        var components = URLComponents(string: "https://github.com/login/oauth/authorize")!
-        components.queryItems = queryItems
-        
-        NSWorkspace.shared.open(components.url!) // open the login form for the user
-        
-        return self.runServerAndAwaitResponse(onHost: host, port: port).flatMapThrowing { response -> EventLoopFuture<Credentials> in
-            guard response.state == state else {
-                throw Error.notMatchingOAuthState
-            }
-            
-            let queryItems: [URLQueryItem] = [
-                .init(name: "client_id", value: clientID),
-                .init(name: "client_secret", value: clientSecret),
-                .init(name: "code", value: response.code),
-                .init(name: "redirect_uri", value: "http://localhost:8888"),
-                .init(name: "state", value: state)
-            ]
-            
-            var components = URLComponents(string: "https://github.com/login/oauth/access_token")!
-            components.queryItems = queryItems
-            
-            var headers = HTTPHeaders()
-            headers.add(name: "Accept", value: "application/json")
-            let request = try HTTPClient.Request(url: components.url?.absoluteString ?? "", method: .POST, headers: headers)
-            
-            return self.client.execute(request: request).flatMapThrowing { response in
-                try response.decodeJSON(OAuthAccessTokenResponse.self)
-            }.map { response in
-                return Credentials(oauthToken: response.accessToken)
-            }
-        }.flatMap { $0 }
+//        
+//        let clientID = ""
+//        let clientSecret = ""
+//        let state = UUID().uuidString
+//        
+//        let host = "localhost"
+//        let port = 8888
+//        
+//        let queryItems: [URLQueryItem] = [
+//            .init(name: "client_id", value: clientID),
+//            .init(name: "redirect_uri", value: "http://\(host):\(port)"),
+//            .init(name: "scope", value: "gist"),
+//            .init(name: "state", value: state)
+//        ]
+//        
+//        var components = URLComponents(string: "https://github.com/login/oauth/authorize")!
+//        components.queryItems = queryItems
+//        
+//        NSWorkspace.shared.open(components.url!) // open the login form for the user
+//        
+//        return self.runServerAndAwaitResponse(onHost: host, port: port).flatMapThrowing { response -> EventLoopFuture<Credentials> in
+//            guard response.state == state else {
+//                throw Error.notMatchingOAuthState
+//            }
+//            
+//            let queryItems: [URLQueryItem] = [
+//                .init(name: "client_id", value: clientID),
+//                .init(name: "client_secret", value: clientSecret),
+//                .init(name: "code", value: response.code),
+//                .init(name: "redirect_uri", value: "http://localhost:8888"),
+//                .init(name: "state", value: state)
+//            ]
+//            
+//            var components = URLComponents(string: "https://github.com/login/oauth/access_token")!
+//            components.queryItems = queryItems
+//            
+//            var headers = HTTPHeaders()
+//            headers.add(name: "Accept", value: "application/json")
+//            let request = try HTTPClient.Request(url: components.url?.absoluteString ?? "", method: .POST, headers: headers)
+//            
+//            return self.client.execute(request: request).flatMapThrowing { response in
+//                try response.decodeJSON(OAuthAccessTokenResponse.self)
+//            }.map { response in
+//                return Credentials(oauthToken: response.accessToken)
+//            }
+//        }.flatMap { $0 }
     }
     
     private enum Error : Equatable, LocalizedError {
