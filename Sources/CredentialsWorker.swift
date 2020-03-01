@@ -76,7 +76,7 @@ extension CredentialsWorker {
     
     private func performAuthenticationFlow() -> EventLoopFuture<Credentials> {
         let clientID = "897c59a7449fe8457108"
-        let clientSecret = "76a313c2b7b14b3fce45907fd17a35af610375e2"
+        let clientSecret = ""
         let state = UUID().uuidString
         
         let host = "localhost"
