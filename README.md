@@ -16,8 +16,8 @@ This project is built in Swift. Building the Swift Package produces an executabl
 
 ```
 get-the-gist authenticate --user [username] --token [token] 
-
 ```
+
 You can choose any `username`. The `token` can be generated from the [GitHub web console](https://github.com/settings/tokens/). Create a new personal access token, or re-use an existing one. Supply the `--user` argument to every subsequent invocation of the utility, passing the same username each time. 
 
 After authenticating, you can then push a file as a gist. 
