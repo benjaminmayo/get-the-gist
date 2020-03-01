@@ -12,13 +12,13 @@ This project is built in Swift. Building the Swift Package produces an executabl
 
 # Usage
 
-`GetTheGist` stores API tokens in the Keychain. To authenticate your system, open a Terminal and execute the following command (supplying a `username` of your own choosing).
+`GetTheGist` stores API tokens in the Keychain. To authenticate your system, open a Terminal and execute the following command.
 
 ```
-get-the-gist authenticate --user [username]  
+get-the-gist authenticate --user [username] --token [token] 
 
 ```
-The `authenticate` command will start the OAuth login flow in your browser. Once logged in, `GetTheGist` saves those credentials in the Keychain for reuse. The `username` parameter allows you to store more than one set of credentials on a single Mac. Supply the `--user` argument to every invocation of the utility, passing the same username each time. 
+You can choose any `username`. The `token` can be generated from the [GitHub web console](https://github.com/settings/tokens/). Create a new personal access token, or re-use an existing one. Supply the `--user` argument to every subsequent invocation of the utility, passing the same username each time. 
 
 After authenticating, you can then push a file as a gist. 
 

@@ -32,6 +32,12 @@ class CredentialsWorker : Worker {
         }
     }
     
+    func setToken(to token: String) -> EventLoopFuture<Void> {
+        self.saveCredentials(Credentials(oauthToken: token))
+        
+        return self.eventLoop.makeSucceededFuture(())
+    }
+    
     func authenticateIfNeeded() -> EventLoopFuture<AuthenticateIfNeededResult> {
         return self.getCredentials().map { _ in
             return .alreadyAuthenticated
@@ -75,6 +81,8 @@ extension CredentialsWorker {
     }
     
     private func performAuthenticationFlow() -> EventLoopFuture<Credentials> {
+        fatalError("unimplemented")
+        
         let clientID = "897c59a7449fe8457108"
         let clientSecret = ""
         let state = UUID().uuidString

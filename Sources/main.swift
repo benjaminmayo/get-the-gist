@@ -70,33 +70,39 @@ struct Authenticate : ParsableCommand {
     @OptionGroup()
     var options: UserOptions
     
-    @Flag(name: .long, help: "Force the authentication flow to happen again, even if existing credentials are found.")
-    var force: Bool
+//    @Flag(name: .long, help: "Force the authentication flow to happen again, even if existing credentials are found.")
+//    var force: Bool
+    
+    @Option(name: .long, help: "Provide a personal access token made in the GitHub UI.") var token: String
     
     func run() throws {
         let worker = CredentialsWorker(forUsername: self.options.username)
         
         let authenticatedSuccessfullyMessage = "Authenticated successfully. The token is stored in the Keychain, so you don't need to authenticate in future."
         
-        if self.force {
-            worker.reauthenticate().map { result in
-                switch result {
-                    case .authenticatedFirstTime:
-                        print(authenticatedSuccessfullyMessage)
-                    case .authenticatedReplacingExistingCredentials:
-                        print("Authenticated successfully. Previously stored credentials were overriden.")
-                }
-            }.done()
-        } else {
-            worker.authenticateIfNeeded().map { result in
-                switch result {
-                    case .alreadyAuthenticated:
-                        print("You are already authenticated. The token is stored in the Keychain. ")
-                    case .authenticated:
-                        print(authenticatedSuccessfullyMessage)
-                }
-            }.done()
-        }
+        worker.setToken(to: self.token).map {
+            print("Updated credentials for \(self.options.username)")
+        }.done()
+        
+//        if self.force {
+//            worker.reauthenticate().map { result in
+//                switch result {
+//                    case .authenticatedFirstTime:
+//                        print(authenticatedSuccessfullyMessage)
+//                    case .authenticatedReplacingExistingCredentials:
+//                        print("Authenticated successfully. Previously stored credentials were overriden.")
+//                }
+//            }.done()
+//        } else {
+//            worker.authenticateIfNeeded().map { result in
+//                switch result {
+//                    case .alreadyAuthenticated:
+//                        print("You are already authenticated. The token is stored in the Keychain. ")
+//                    case .authenticated:
+//                        print(authenticatedSuccessfullyMessage)
+//                }
+//            }.done()
+//        }
     }
 }
 
