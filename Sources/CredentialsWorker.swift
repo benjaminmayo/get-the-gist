@@ -37,32 +37,32 @@ class CredentialsWorker : Worker {
         
         return self.eventLoop.makeSucceededFuture(())
     }
-    
-    func authenticateIfNeeded() -> EventLoopFuture<AuthenticateIfNeededResult> {
-        return self.getCredentials().map { _ in
-            return .alreadyAuthenticated
-        }.flatMapError(where: Error.credentialsNotFound(username: self.username)) {
-            return self.performAuthenticationFlow().map { credentials in
-                self.saveCredentials(credentials)
-                
-                return .authenticated
-            }
-        }
-    }
-    
-    func reauthenticate() -> EventLoopFuture<ReauthenticateResult> {
-        return self.performAuthenticationFlow().flatMap { credentials in
-            return self.getCredentials().map { _ in
-                self.saveCredentials(credentials)
-                
-                return .authenticatedReplacingExistingCredentials
-            }.flatMapError(where: Error.credentialsNotFound(username: self.username)) {
-                self.saveCredentials(credentials)
-                
-                return self.eventLoop.makeSucceededFuture(.authenticatedFirstTime)
-            }
-        }
-    }
+//
+//    func authenticateIfNeeded() -> EventLoopFuture<AuthenticateIfNeededResult> {
+//        return self.getCredentials().map { _ in
+//            return .alreadyAuthenticated
+//        }.flatMapError(where: Error.credentialsNotFound(username: self.username)) {
+//            return self.performAuthenticationFlow().map { credentials in
+//                self.saveCredentials(credentials)
+//
+//                return .authenticated
+//            }
+//        }
+//    }
+//
+//    func reauthenticate() -> EventLoopFuture<ReauthenticateResult> {
+//        return self.performAuthenticationFlow().flatMap { credentials in
+//            return self.getCredentials().map { _ in
+//                self.saveCredentials(credentials)
+//
+//                return .authenticatedReplacingExistingCredentials
+//            }.flatMapError(where: Error.credentialsNotFound(username: self.username)) {
+//                self.saveCredentials(credentials)
+//
+//                return self.eventLoop.makeSucceededFuture(.authenticatedFirstTime)
+//            }
+//        }
+//    }
     
     enum AuthenticateIfNeededResult {
         case authenticated
@@ -80,8 +80,8 @@ extension CredentialsWorker {
         self.keychain[string: self.keychainStoredAPITokenKey] = credentials.oauthToken
     }
     
-    private func performAuthenticationFlow() -> EventLoopFuture<Credentials> {
-        fatalError("unimplemented: ugh i realised this needs a secret to be exposed and I don't want that so for now, you have to supply your own token through the `authenticate --token` command.")
+//    private func performAuthenticationFlow() -> EventLoopFuture<Credentials> {
+//        fatalError("unimplemented: ugh i realised this needs a secret to be exposed and I don't want that so for now, you have to supply your own token through the `authenticate --token` command.")
 //        
 //        let clientID = ""
 //        let clientSecret = ""
@@ -128,7 +128,7 @@ extension CredentialsWorker {
 //                return Credentials(oauthToken: response.accessToken)
 //            }
 //        }.flatMap { $0 }
-    }
+  //  }
     
     private enum Error : Equatable, LocalizedError {
         case credentialsNotFound(username: String)
